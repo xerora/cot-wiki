@@ -1,0 +1,39 @@
+.wiki-line-delete {
+	border: 1px solid #c37373;
+	border-left: 4px solid #c37373;
+	padding: 8px;
+	background-color: #efe3e3;
+	color: #333;
+	height: 20px;
+	border-radius: 3px;
+}
+
+.wiki-line-insert {
+	border: 1px solid #80c373;
+	border-left: 4px solid #80c373;
+	padding: 8px;
+	background-color: #e7efe3;
+	color: #333;
+	height: 20px;
+	border-radius: 3px;
+}
+
+.wiki-line-unchanged {
+	border: 1px solid #ddd;
+	border-left: 4px solid #ddd;
+	padding: 8px;
+	background-color: #f9f9f9;
+	color: #333;
+	height: 20px;
+	border-radius: 3px;
+}
+
+.wiki-line-replace {
+	border: 1px solid #c3be73;
+	border-left: 4px solid #c3be73;
+	padding: 8px;
+	background-color: #efefe3;
+	color: #333;
+	height: 20px;
+	border-radius: 3px;
+}
