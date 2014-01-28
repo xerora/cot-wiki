@@ -13,6 +13,9 @@ $diffs_rows = $db->query("SELECT r.*,h.* FROM {$db->wiki_revisions} AS r ".
 
 $page = $db->query("SELECT page_title,page_cat FROM {$db->pages} WHERE page_id=?", $diffs_rows[0]['history_page_id'])->fetch();
 
+list($usr['auth_read'], $usr['auth_write'], $usr['isadmin']) = cot_auth('page', $page['page_cat']);
+cot_block($usr['isadmin']);
+
 if(!$diffs_rows || count($diffs_rows) !== 2)
 {
 	cot_die_message(404, true);
@@ -21,10 +24,8 @@ if(!$diffs_rows || count($diffs_rows) !== 2)
 
 $t = new XTemplate(cot_tplfile('wiki.difference', 'plug'));
 
-$cache = false;
-
 $cache_identifier = $diff1.'_'.$diff2;
-$cache && $changes = $cache->disk->get($cache_identifier, 'wiki');
+$cache && $changes = $cache->disk->get($cache_identifier, WIKI_CACHE_DIFF_REALM);
 
 if(!$changes)
 {
@@ -38,7 +39,7 @@ if(!$changes)
 	$diff = new Diff($diff1_text, $diff2_text);
 	$diff_renderer = new Diff_Renderer_Html_Array();
 	$changes = $diff->render($diff_renderer);
-	$cache && $cache->disk->store($cache_identifier, $changes, 'wiki');
+	$cache && $cache->disk->store($cache_identifier, $changes, WIKI_CACHE_DIFF_REALM);
 }
 
 foreach($changes as $i => $blocks)

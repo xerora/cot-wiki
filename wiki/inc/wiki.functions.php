@@ -1,6 +1,7 @@
 <?php defined('COT_CODE') or die('Wrong URL');
 
 define('WIKI_DEFAULT_FORMAT_DATETIME', 'F jS, Y H:i');
+define('WIKI_CACHE_DIFF_REALM', 'wiki_difference');
 
 cot::$db->registerTable('wiki_history');
 cot::$db->registerTable('wiki_revisions');
