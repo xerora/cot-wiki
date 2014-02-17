@@ -5,6 +5,7 @@ define('WIKI_CACHE_DIFF_REALM', 'wiki_difference');
 
 cot::$db->registerTable('wiki_history');
 cot::$db->registerTable('wiki_revisions');
+cot::$db->registerTable('wiki_perms_group');
 
 function wiki_history_tags($row, $prefix = 'HISTORY_')
 {
@@ -71,6 +72,12 @@ function wiki_history_add($data)
 	return cot::$db->insert(cot::$db->wiki_history, $data);
 }
 
+function wiki_block_group($groups)
+{
+	$groups = is_string($groups) ? array($groups) : $groups;
+	return !(bool)cot::$db->query("SELECT COUNT(*) FROM ".cot::$db->wiki_perms_group." WHERE perm_groupid IN ('".implode(',', $groups)."')", $group)->fetchColumn();
+}
+
 function wiki_datetime($input = null)
 {
 	$now = cot::$sys['now'];
@@ -84,4 +91,22 @@ function wiki_datetime($input = null)
 function wiki_history_datetime()
 {
 	return cot_date('Y-m-d h:i:s', time(), false);
+}
+
+function wiki_groups_selectbox()
+{
+	global $cot_groups;
+	$output = cot_rc('wiki_groups_select_open', array('name' => 'rulegroup'));
+	foreach($cot_groups as $group => $data)
+	{
+
+		$output .= cot_rc('wiki_groups_select_option', 
+			array(
+				'name' => htmlspecialchars($data['name']),
+				'value' => (int)$group
+			)
+		);
+	}
+	$output .= cot_rc('wiki_groups_select_close', array());
+	return $output;
 }

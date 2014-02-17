@@ -69,4 +69,5 @@ $t->assign(array(
 
 $t->parse()->out();
 
+cot_display_messages($t);
 require_once $cfg['system_dir'] . '/footer.php';
