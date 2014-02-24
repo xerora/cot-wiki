@@ -6,7 +6,7 @@
 		{FILE "{PHP.cfg.themes_dir}/admin/{PHP.cfg.admintheme}/warnings.tpl"}
 
 			<div class="block">
-				<h5>Add Block Rule</h5>
+				<h5>{PHP.L.wiki_add_rule_block}</h5>
 				<div class="wrapper">
 					<form method="POST" action="{RULE_ADD_ACTION}">
 					<table class="table table-bordered">
@@ -23,7 +23,7 @@
 							<td>{RULE_ADD_SUBCATEGORIES}
 						</tr>
 							<tr>
-								<td colspan="2" style="text-align: center;"><button type="submit">Add rule</button></td>
+								<td colspan="2" style="text-align: center;"><button type="submit">{PHP.L.wiki_add_rule}</button></td>
 							</tr>
 					</table>
 					</form>

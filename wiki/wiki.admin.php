@@ -92,7 +92,7 @@ else
 
 $t->assign(array(
 	'RULE_ADD_ACTION' => cot_url('admin', $common_url.'&a=addrule'),
-	'RULE_ADD_CATEGORY' => cot_selectbox_structure('page', '', 'rcat'), 
+	'RULE_ADD_CATEGORY' => wiki_categories_selectbox(),
 	'RULE_ADD_GROUPS' => wiki_groups_selectbox(),
 	'RULE_ADD_SUBCATEGORIES' => cot_radiobox(0, 'rallsubcats', array(1,0), array($L['Yes'], $L['No'])),
 ));

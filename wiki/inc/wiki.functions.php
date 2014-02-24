@@ -93,20 +93,39 @@ function wiki_history_datetime()
 	return cot_date('Y-m-d h:i:s', time(), false);
 }
 
+function wiki_categories_selectbox()
+{
+	$output = cot_rc('wiki_select_open', array('name' => 'rcat'));
+	foreach(cot::$structure['page'] as $name => $data)
+	{
+		if($data['wiki_enabled'])
+		{
+			$output .= cot_rc('wiki_select_option',
+				array(
+					'name' => htmlspecialchars($data['tpath']),
+					'value' => $name,
+				)
+			);
+		}
+	}
+	$output .= cot_rc('wiki_select_close', array());
+	return $output;
+}
+
 function wiki_groups_selectbox()
 {
 	global $cot_groups;
-	$output = cot_rc('wiki_groups_select_open', array('name' => 'rulegroup'));
+	$output = cot_rc('wiki_select_open', array('name' => 'rulegroup'));
 	foreach($cot_groups as $group => $data)
 	{
 
-		$output .= cot_rc('wiki_groups_select_option', 
+		$output .= cot_rc('wiki_select_option',
 			array(
 				'name' => htmlspecialchars($data['name']),
 				'value' => (int)$group
 			)
 		);
 	}
-	$output .= cot_rc('wiki_groups_select_close', array());
+	$output .= cot_rc('wiki_select_close', array());
 	return $output;
 }
