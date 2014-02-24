@@ -11,15 +11,15 @@
 					<form method="POST" action="{RULE_ADD_ACTION}">
 					<table class="table table-bordered">
 						<tr>
-							<td style="width: 30%;">Group</td>
+							<td style="width: 30%;">{PHP.L.Group}</td>
 							<td>{RULE_ADD_GROUPS}</td>
 						</tr>
 						<tr>
-							<td>Category</td>
+							<td>{PHP.L.Category}</td>
 							<td>{RULE_ADD_CATEGORY}</td>
 						</tr>
 						<tr>
-							<td>And all sub-categories ?</td>
+							<td>{PHP.L.wiki_all_subcats} ?</td>
 							<td>{RULE_ADD_SUBCATEGORIES}
 						</tr>
 							<tr>
@@ -45,9 +45,9 @@
 							<tr>
 								<th style="text-align: center; width: 8%;"><input type="checkbox" onclick="$('.wchecked').prop('checked', $(this).prop('checked'));" /></th>
 								<th style="text-align: left; width: 15%; font-weight: bold;">Group ID</th>
-								<th style="text-align: left; font-weight: bold;">Group</th>
-								<th style="text-align: left; font-weight: bold;">Category</th>
-								<th style="width: 15%; font-weight: bold;">All Sub-categories</th>
+								<th style="text-align: left; font-weight: bold;">{PHP.L.Group}</th>
+								<th style="text-align: left; font-weight: bold;">{PHP.L.Category}</th>
+								<th style="width: 15%; font-weight: bold;">{PHP.L.wiki_all_subcats}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -56,7 +56,7 @@
 								<td style="text-align: center;">{CHECKBOX}</td>
 								<td>{GROUP_ID}</td>
 								<td>{GROUP_NAME}</td>
-								<td>{BLOCKED_CATEGORY}</td>
+								<td>{BLOCKED_CATEGORY_PATH}</td>
 								<td style="text-align: center;">{BLOCKED_SUBCATEGORIES}</td>
 							</tr>
 						<!-- END: ROWS -->

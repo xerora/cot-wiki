@@ -16,14 +16,30 @@ $common_url = 'm=other&p=wiki';
 if($a == 'addrule')
 {
 	cot_check_xp();
+	$rule_conflict = false;
 	$rrule = array(
 		'perm_groupid' => cot_import('rulegroup', 'P', 'INT'),
 		'perm_cat' => cot_import('rcat', 'P', 'TXT'),
 		'perm_catsub' => cot_import('rallsubcats', 'P', 'BOL'),
 	);
+	$existing_group_rules = $db->query("SELECT perm_cat,perm_catsub FROM {$db->wiki_perms_group} WHERE perm_groupid=?", $rrule['perm_groupid']);
+	foreach($existing_group_rules as $erule)
+	{
+		if($erule['perm_cat'] == $rrule['perm_cat'] || (bool)$erule['perm_catsub'] && in_array($rrule['perm_cat'], cot_structure_children('page', $erule['perm_cat'])))
+		{
+			$rule_conflict = true;
+		}
+	}
 
-	$db->insert($db->wiki_perms_group, $rrule);
-	cot_message('wiki_msg_added_rule');
+	if(!$rule_conflict)
+	{
+		$db->insert($db->wiki_perms_group, $rrule);
+		cot_message('wiki_msg_added_rule');
+	}
+	else
+	{
+		cot_message('wiki_msg_rule_conflict');
+	}
 }
 if($a == 'checked')
 {
@@ -49,7 +65,6 @@ if($a == 'checked')
 		break;
 	}
 }
-
 $blocked_groups_rows = $db->query("SELECT * FROM {$db->wiki_perms_group}")->fetchAll();
 if(!empty($blocked_groups_rows))
 {
@@ -60,6 +75,7 @@ if(!empty($blocked_groups_rows))
 			'CHECKBOX' => cot_checkbox('', 'rchecked[]', '', array('class' => 'wchecked'), $blocked_group['perm_id']),
 			'GROUP_NAME' => htmlspecialchars($cot_groups[$blocked_group['perm_groupid']]['name']),
 			'BLOCKED_CATEGORY' => htmlspecialchars($structure['page'][$blocked_group['perm_cat']]['title']),
+			'BLOCKED_CATEGORY_PATH' => htmlspecialchars($structure['page'][$blocked_group['perm_cat']]['tpath']),
 			'BLOCKED_SUBCATEGORIES' => (bool)$blocked_group['perm_catsub'] === true ? $L['Yes'] : $L['No'],
 		));
 		$t->parse('MAIN.BLOCKED_GROUPS.ROWS');

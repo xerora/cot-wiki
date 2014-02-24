@@ -72,7 +72,7 @@ function wiki_history_add($data)
 	return cot::$db->insert(cot::$db->wiki_history, $data);
 }
 
-function wiki_block_group($groups)
+function wiki_block_group($groups, $cat = '')
 {
 	$groups = is_string($groups) ? array($groups) : $groups;
 	return !(bool)cot::$db->query("SELECT COUNT(*) FROM ".cot::$db->wiki_perms_group." WHERE perm_groupid IN ('".implode(',', $groups)."')", $group)->fetchColumn();
