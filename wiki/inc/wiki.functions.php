@@ -39,7 +39,8 @@ function wiki_history_list($id, $lang = '')
 
 	if(!empty($lang))
 	{
-		$sql_lang = "AND history_language='".cot::$db->prep($lang)."'";
+		$lang = cot::$db->prep($lang);
+		$sql_lang = "AND history_language='{$lang}'";
 	}
 
 	return cot::$db->query("SELECT h.*,u.user_name,p.page_cat FROM ".cot::$db->wiki_history." AS h ".
@@ -75,16 +76,19 @@ function wiki_history_add($data)
 function wiki_block_group($group, $cat)
 {
 	$blocked = false;
-	$catpath = cot::$structure['page'][$cat]['path'];
-	$path = explode('.', $catpath);
-	$perms = cot::$db->query("SELECT * FROM ".cot::$db->wiki_perms_group." WHERE perm_cat IN ('".implode("','", $path)."') AND perm_groupid=?", $group)->fetchAll();
+	$path = explode('.', cot::$structure['page'][$cat]['path']);
+	$path_preped = array();
+	foreach($path as $path_category)
+	{
+		$path_preped[] = cot::$db->prep($path_category);
+	}
+	$perms = cot::$db->query("SELECT * FROM ".cot::$db->wiki_perms_group." WHERE perm_groupid=? AND perm_cat IN ('".implode("','", $path_preped)."')", $group)->fetchAll();
 	$perms_count = count($perms);
 	$selected_cat_perms = $perms[$perms_count-1];
 	if($selected_cat_perms['perm_cat'] == $cat)
 	{
 		$blocked = true;
 	}
-
 	if(!$blocked && $perms_count > 1)
 	{
 		foreach($perms as $perm)
@@ -115,9 +119,13 @@ function wiki_history_datetime()
 	return cot_date('Y-m-d h:i:s', time(), false);
 }
 
-function wiki_categories_selectbox()
+function wiki_categories_selectbox($inputname, $value = '', $prependempty = false)
 {
-	$output = cot_rc('wiki_select_open', array('name' => 'rcat'));
+	$output = cot_rc('wiki_select_open', array('name' => $inputname));
+	if($prependempty)
+	{
+		$output .= cot_rc('wiki_select_option', array('name' => '----', 'value' => ''));
+	}
 	foreach(cot::$structure['page'] as $name => $data)
 	{
 		if($data['wiki_enabled'])
@@ -126,6 +134,7 @@ function wiki_categories_selectbox()
 				array(
 					'name' => htmlspecialchars($data['tpath']),
 					'value' => $name,
+					'selected' => ($name == $value) ? 'selected="selected"' : '',
 				)
 			);
 		}
@@ -134,17 +143,21 @@ function wiki_categories_selectbox()
 	return $output;
 }
 
-function wiki_groups_selectbox()
+function wiki_groups_selectbox($inputname, $value = '', $prependempty = false)
 {
 	global $cot_groups;
-	$output = cot_rc('wiki_select_open', array('name' => 'rulegroup'));
+	$output = cot_rc('wiki_select_open', array('name' => $inputname));
+	if($prependempty)
+	{
+		$output .= cot_rc('wiki_select_option', array('name' => '----', 'value' => ''));
+	}
 	foreach($cot_groups as $group => $data)
 	{
-
 		$output .= cot_rc('wiki_select_option',
 			array(
 				'name' => htmlspecialchars($data['name']),
-				'value' => (int)$group
+				'value' => (int)$group,
+				'selected' => ($group == $value) ? 'selected="selected"' : '',
 			)
 		);
 	}

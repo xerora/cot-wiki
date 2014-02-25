@@ -8,7 +8,7 @@ require_once cot_incfile('page', 'module');
 
 if($id)
 {
-	$row = $db->query("SELECT page_text,page_parser,page_cat FROM {$db->pages} WHERE page_id=? LIMIT 1", $id)->fetch();
+	$row = $db->query("SELECT page_text,page_parser,page_cat,page_title,page_date FROM {$db->pages} WHERE page_id=? LIMIT 1", $id)->fetch();
 	$wiki_text = $row['page_text'];
 	$wiki_action = '&id='.(int)$row['page_id'];
 }
@@ -67,6 +67,7 @@ $t->assign(array(
 	'WIKI_EDIT_ACTION' => cot_url('wiki', 'm=edit&a=update'.$wiki_action),
 	'WIKI_EDIT_TEXT' => cot_textarea('rwikitext', $wiki_text, 24, 120, '', 'input_textarea_editor'),
 	'WIKI_EDIT_TITLE' => htmlspecialchars($row['page_title']),
+	'WIKI_EDIT_DATE' => wiki_datetime($row['page_date']),
 ));
 
 $t->parse()->out();

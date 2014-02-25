@@ -11,7 +11,12 @@ require_once cot_incfile('wiki', 'plug');
 require_once cot_incfile('wiki', 'plug', 'resources');
 $t = new XTemplate(cot_tplfile('wiki.admin.main', 'plug'));
 
-$common_url = 'm=other&p=wiki';
+list($pg, $d, $durl) = cot_import_pagenav('d', $cfg['maxrowsperpage']);
+$groupid = cot_import('groupid', $_SERVER['REQUEST_METHOD'], 'INT');
+$cat = cot_import('cat', $_SERVER['REQUEST_METHOD'], 'TXT');
+
+$common_url = 'm=other&p=wiki&groupid='.$groupid.'&cat='.$cat.'&pg='.$pg;
+$where_sql = "";
 
 if($a == 'addrule')
 {
@@ -65,7 +70,29 @@ if($a == 'checked')
 		break;
 	}
 }
-$blocked_groups_rows = $db->query("SELECT * FROM {$db->wiki_perms_group}")->fetchAll();
+if($a == 'filter')
+{
+	$filter_sql = array();
+
+	if(!empty($groupid))
+	{
+		$filter_sql[] = "perm_groupid=".$groupid;
+	}
+	if(!empty($cat))
+	{
+		$filter_sql[] = "perm_cat=".$db->quote($cat);
+	}
+
+	$where_sql = implode(' AND ', $filter_sql);
+}
+
+if(!empty($where_sql))
+{
+	$where_sql = "WHERE ".$where_sql;
+}
+
+$totalrows = $db->query("SELECT COUNT(*) FROM {$db->wiki_perms_group} {$where_sql}")->fetchColumn();
+$blocked_groups_rows = $db->query("SELECT * FROM {$db->wiki_perms_group} {$where_sql} LIMIT ".(int)$d.", ".(int)$cfg['maxrowsperpage'])->fetchAll();
 if(!empty($blocked_groups_rows))
 {
 	foreach($blocked_groups_rows as $blocked_group)
@@ -80,9 +107,6 @@ if(!empty($blocked_groups_rows))
 		));
 		$t->parse('MAIN.BLOCKED_GROUPS.ROWS');
 	}
-	$t->assign(array(
-		'ACTION' => cot_url('admin', $common_url.'&a=checked'),
-	));
 	$t->parse('MAIN.BLOCKED_GROUPS');
 }
 else
@@ -91,10 +115,25 @@ else
 }
 
 $t->assign(array(
+	'FILTER_ACTION' => cot_url('admin', $common_url.'&a=filter'),
+	'FILTER_GROUP' => wiki_groups_selectbox('groupid', $groupid, true),
+	'FILTER_CATEGORY' => wiki_categories_selectbox('cat', $cat, true),
+	'ACTION' => cot_url('admin', $common_url.'&a=checked'),
+));
+
+$t->parse('MAIN.FILTER');
+
+$pagenav = cot_pagenav('admin', $common_url, $d, $totalrows, $cfg['maxrowsperpage']);
+
+$t->assign(array(
 	'RULE_ADD_ACTION' => cot_url('admin', $common_url.'&a=addrule'),
-	'RULE_ADD_CATEGORY' => wiki_categories_selectbox(),
-	'RULE_ADD_GROUPS' => wiki_groups_selectbox(),
+	'RULE_ADD_CATEGORY' => wiki_categories_selectbox('rcat'),
+	'RULE_ADD_GROUPS' => wiki_groups_selectbox('rulegroup'),
 	'RULE_ADD_SUBCATEGORIES' => cot_radiobox(0, 'rallsubcats', array(1,0), array($L['Yes'], $L['No'])),
+	'RULE_PAGENAV_PAGES' => $pagenav['main'],
+	'RULE_PAGENAV_PREV' => $pagenav['prev'],
+	'RULE_PAGENAV_NEXT' =>$pagenav['next'],
+	'RULE_PAGENAV_CURRENT' => $pagenav['current'],
 ));
 
 cot_display_messages($t);
