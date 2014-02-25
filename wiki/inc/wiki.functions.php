@@ -72,10 +72,32 @@ function wiki_history_add($data)
 	return cot::$db->insert(cot::$db->wiki_history, $data);
 }
 
-function wiki_block_group($groups, $cat = '')
+function wiki_block_group($group, $cat)
 {
-	$groups = is_string($groups) ? array($groups) : $groups;
-	return !(bool)cot::$db->query("SELECT COUNT(*) FROM ".cot::$db->wiki_perms_group." WHERE perm_groupid IN ('".implode(',', $groups)."')", $group)->fetchColumn();
+	$blocked = false;
+	$catpath = cot::$structure['page'][$cat]['path'];
+	$path = explode('.', $catpath);
+	$perms = cot::$db->query("SELECT * FROM ".cot::$db->wiki_perms_group." WHERE perm_cat IN ('".implode("','", $path)."') AND perm_groupid=?", $group)->fetchAll();
+	$perms_count = count($perms);
+	$selected_cat_perms = $perms[$perms_count-1];
+	if($selected_cat_perms['perm_cat'] == $cat)
+	{
+		$blocked = true;
+	}
+
+	if(!$blocked && $perms_count > 1)
+	{
+		foreach($perms as $perm)
+		{
+			if($perm['perm_catsub'])
+			{
+				$blocked = true;
+				break;
+			}
+		}
+	}
+
+	return $blocked;
 }
 
 function wiki_datetime($input = null)

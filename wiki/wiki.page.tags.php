@@ -7,6 +7,11 @@ Hooks=page.tags
 
 $rev = cot_import('rev', 'G', 'INT');
 
+require_once cot_incfile('wiki', 'plug');
+
+$wiki_edit_allowed = !wiki_block_group($usr['maingrp'], $pag['page_cat']);
+$wiki_edit_url = cot_url('wiki', 'm=edit&id='.$pag['page_id']);
+
 if(!empty($rev) && is_int($rev))
 {
 	require_once cot_incfile('wiki', 'plug');
@@ -21,4 +26,12 @@ if(!empty($rev) && is_int($rev))
 		'PAGE_TEXT' => cot_parse($wiki_revision['rev_text'], true, $wiki_revision['revision_parser'])
 	));
 
+}
+
+if($wiki_edit_allowed)
+{
+	$t->assign(array(
+		'WIKI_EDIT_URL' => $wiki_edit_url,
+	));
+	$t->parse('MAIN.WIKI_EDIT');
 }

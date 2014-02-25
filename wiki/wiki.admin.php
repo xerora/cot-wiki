@@ -38,7 +38,7 @@ if($a == 'addrule')
 	}
 	else
 	{
-		cot_message('wiki_msg_rule_conflict');
+		cot_error('wiki_msg_rule_conflict');
 	}
 }
 if($a == 'checked')
@@ -76,7 +76,7 @@ if(!empty($blocked_groups_rows))
 			'GROUP_NAME' => htmlspecialchars($cot_groups[$blocked_group['perm_groupid']]['name']),
 			'BLOCKED_CATEGORY' => htmlspecialchars($structure['page'][$blocked_group['perm_cat']]['title']),
 			'BLOCKED_CATEGORY_PATH' => htmlspecialchars($structure['page'][$blocked_group['perm_cat']]['tpath']),
-			'BLOCKED_SUBCATEGORIES' => (bool)$blocked_group['perm_catsub'] === true ? $L['Yes'] : $L['No'],
+			'BLOCKED_SUBCATEGORIES' => $blocked_group['perm_catsub'] ? $L['Yes'] : $L['No'],
 		));
 		$t->parse('MAIN.BLOCKED_GROUPS.ROWS');
 	}

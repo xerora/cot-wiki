@@ -5,8 +5,6 @@ $rev = cot_import('rev', 'G', 'INT');
 $a = cot_import('a', 'G', 'ALP');
 
 require_once cot_incfile('page', 'module');
-require_once $cfg['system_dir'] . '/header.php';
-$t = new XTemplate(cot_tplfile('wiki.edit', 'plug'));
 
 if($id)
 {
@@ -23,11 +21,15 @@ if($rev)
 	$wiki_text = $row['rev_text'];
 	$wiki_action = '&rev='.(int)$row['rev_id'];
 	$id = $row['history_page_id'];
-
-	$t->assign(array(
-		'WIKI_EDIT_DATE' => wiki_datetime($row['history_added']),
-	));
 }
+
+if(wiki_block_group($usr['maingrp'], $row['page_cat']))
+{
+	cot_die_message(403, true);
+}
+
+require_once $cfg['system_dir'] . '/header.php';
+$t = new XTemplate(cot_tplfile('wiki.edit', 'plug'));
 
 $sys['parser'] = $row['page_parser'];
 
