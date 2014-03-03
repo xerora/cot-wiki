@@ -37,3 +37,13 @@
 	height: 20px;
 	border-radius: 3px;
 }
+
+.wiki-line-changed {
+	border: 1px solid #c3be73;
+	border-left: 4px solid #c3be73;
+	padding: 8px;
+	background-color: #efefe3;
+	color: #333;
+	height: 20px;
+	border-radius: 3px;
+}

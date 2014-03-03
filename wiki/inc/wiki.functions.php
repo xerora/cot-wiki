@@ -143,6 +143,23 @@ function wiki_categories_selectbox($inputname, $value = '', $prependempty = fals
 	return $output;
 }
 
+function wiki_category_enabled($cat)
+{
+	$struc = cot_structure_parents('page', $cat);
+	if(cot::$structure['page'][$cat]['wiki_enabled'])
+	{
+		return true;
+	}
+	foreach($struc as $c)
+	{
+		if(cot::$structure['page'][$c]['wiki_subcats'])
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 function wiki_groups_selectbox($inputname, $value = '', $prependempty = false)
 {
 	global $cot_groups;

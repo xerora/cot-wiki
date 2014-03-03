@@ -59,14 +59,14 @@
 				</tr>
 			<!-- END: REPLACE -->
 
-			<!-- BEGIN: DEFAULT -->
+			<!-- BEGIN: CHANGED -->
 				<tr>
 					<th>{DIFF_FROM_LINE}</th>
-					<td>{DIFF_LINE}&nbsp;</td>
+					<td class="wiki-line-changed">{DIFF_LINE}&nbsp;</td>
 					<th>{DIFF_TO_LINE}</th>
-					<td>{DIFF_CHANGED_LINE}</td>
+					<td class="wiki-line-changed">{DIFF_CHANGED_LINE}</td>
 				</tr>
-			<!-- END: DEFAULT -->
+			<!-- END: CHANGED -->
 
 			</tbody>
 		<!-- END: BLOCKS -->

@@ -91,6 +91,8 @@ foreach($changes as $i => $blocks)
 		}
 		elseif($change['tag'] == 'replace')
 		{
+			if(count($change['base']['lines']) >= count($change['changed']['lines']))
+			{
 				foreach($change['base']['lines'] as $no => $line)
 				{
 					$diff_from_line = $change['base']['offset'] + $no + 1;
@@ -113,30 +115,31 @@ foreach($changes as $i => $blocks)
 					));
 					$t->parse('MAIN.DIFF.BLOCKS.REPLACE');
 				}
-		}
-		else
-		{
-			foreach($change['changed']['lines'] as $no => $changedLine)
+			}
+			else
 			{
-				if(!isset($change['base']['lines'][$no]))
+				foreach($change['changed']['lines'] as $no => $changedLine)
 				{
-					$diff_from_line = '&nbsp;';
-					$line = '&nbsp;';
-				}
-				else
-				{
-					$diff_from_line = $change['base']['offset'] + $no + 1;
-					$line = $change['base']['lines'][$no];
-				}
-				$diff_to_line = $change['changed']['offset'] + $no + 1;
+					if(!isset($change['base']['lines'][$no]))
+					{
+						$diff_from_line = '&nbsp;';
+						$line = '&nbsp;';
+					}
+					else
+					{
+						$diff_from_line = $change['base']['offset'] + $no + 1;
+						$line = $change['base']['lines'][$no];
+					}
+					$diff_to_line = $change['changed']['offset'] + $no + 1;
 
-				$t->assign(array(
-					'DIFF_TO_LINE' => $diff_to_line,
-					'DIFF_FROM_LINE' => $diff_from_line,
-					'DIFF_CHANGED_LINE' => $changedLine,
-					'DIFF_LINE' => $line
-				));
-				$t->parse('MAIN.DIFF.BLOCKS.DEFAULT');
+					$t->assign(array(
+						'DIFF_TO_LINE' => $diff_to_line,
+						'DIFF_FROM_LINE' => $diff_from_line,
+						'DIFF_CHANGED_LINE' => $changedLine,
+						'DIFF_LINE' => $line
+					));
+					$t->parse('MAIN.DIFF.BLOCKS.CHANGED');
+				}
 			}
 		}
 
