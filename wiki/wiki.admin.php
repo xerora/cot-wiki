@@ -104,6 +104,7 @@ if(!empty($blocked_groups_rows))
 			'BLOCKED_CATEGORY' => htmlspecialchars($structure['page'][$blocked_group['perm_cat']]['title']),
 			'BLOCKED_CATEGORY_PATH' => htmlspecialchars($structure['page'][$blocked_group['perm_cat']]['tpath']),
 			'BLOCKED_SUBCATEGORIES' => $blocked_group['perm_catsub'] ? $L['Yes'] : $L['No'],
+			'ACTION' => cot_url('admin', $common_url.'&a=checked'),
 		));
 		$t->parse('MAIN.BLOCKED_GROUPS.ROWS');
 	}
@@ -118,7 +119,6 @@ $t->assign(array(
 	'FILTER_ACTION' => cot_url('admin', $common_url.'&a=filter'),
 	'FILTER_GROUP' => wiki_groups_selectbox('groupid', $groupid, true),
 	'FILTER_CATEGORY' => wiki_categories_selectbox('cat', $cat, true),
-	'ACTION' => cot_url('admin', $common_url.'&a=checked'),
 ));
 
 $t->parse('MAIN.FILTER');
@@ -132,7 +132,7 @@ $t->assign(array(
 	'RULE_ADD_SUBCATEGORIES' => cot_radiobox(0, 'rallsubcats', array(1,0), array($L['Yes'], $L['No'])),
 	'RULE_PAGENAV_PAGES' => $pagenav['main'],
 	'RULE_PAGENAV_PREV' => $pagenav['prev'],
-	'RULE_PAGENAV_NEXT' =>$pagenav['next'],
+	'RULE_PAGENAV_NEXT' => $pagenav['next'],
 	'RULE_PAGENAV_CURRENT' => $pagenav['current'],
 ));
 

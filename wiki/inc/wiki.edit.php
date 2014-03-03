@@ -10,7 +10,7 @@ if($id)
 {
 	$row = $db->query("SELECT page_text,page_parser,page_cat,page_title,page_date FROM {$db->pages} WHERE page_id=? LIMIT 1", $id)->fetch();
 	$wiki_text = $row['page_text'];
-	$wiki_action = '&id='.(int)$row['page_id'];
+	$wiki_action = '&id='.$id;
 }
 if($rev)
 {

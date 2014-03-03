@@ -91,8 +91,6 @@ foreach($changes as $i => $blocks)
 		}
 		elseif($change['tag'] == 'replace')
 		{
-			if(count($change['base']['lines']) >= count($change['changed']['lines']))
-			{
 				foreach($change['base']['lines'] as $no => $line)
 				{
 					$diff_from_line = $change['base']['offset'] + $no + 1;
@@ -115,7 +113,6 @@ foreach($changes as $i => $blocks)
 					));
 					$t->parse('MAIN.DIFF.BLOCKS.REPLACE');
 				}
-			}
 		}
 		else
 		{
@@ -152,10 +149,10 @@ $diff1_timestamp = strtotime($row_diff1['history_added']);
 $diff2_timestamp = strtotime($row_diff2['history_added']);
 
 $t->assign(array(
-	'DIFF1_DATE' => wiki_datetime($row_diff1['history_added']),
+	'DIFF1_DATE' => wiki_datetime($diffs_rows[0]['history_added']),
 	'DIFF1_AUTHOR' => htmlspecialchars($diff1['history_author']),
 	'DIFF1_URL_EDIT' => cot_url('wiki', 'm=edit&rev='.$row_diff1['rev_id']),
-	'DIFF2_DATE' => wiki_datetime($row_diff2['history_added']),
+	'DIFF2_DATE' => wiki_datetime($diffs_rows[1]['history_added']),
 	'DIFF2_AUTHOR' => htmlspecialchars($diff2['history_author']),
 	'DIFF2_URL_EDIT' => cot_url('wiki', 'm=edit&rev='.$row_diff2['rev_id']),
 	'DIFF_TITLE' => htmlspecialchars($page['page_title']),

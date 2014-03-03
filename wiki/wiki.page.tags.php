@@ -28,7 +28,7 @@ if(!empty($rev) && is_int($rev))
 
 }
 
-if($wiki_edit_allowed)
+if($wiki_edit_allowed && !$usr['isadmin'])
 {
 	$t->assign(array(
 		'WIKI_EDIT_URL' => $wiki_edit_url,
