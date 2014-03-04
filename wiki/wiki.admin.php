@@ -11,9 +11,11 @@ require_once cot_incfile('wiki', 'plug');
 require_once cot_incfile('wiki', 'plug', 'resources');
 $t = new XTemplate(cot_tplfile('wiki.admin.main', 'plug'));
 
+$request_method = $_SERVER['REQUEST_METHOD'] == 'POST' ? 'P' : 'G';
+
 list($pg, $d, $durl) = cot_import_pagenav('d', $cfg['maxrowsperpage']);
-$groupid = cot_import('groupid', $_SERVER['REQUEST_METHOD'], 'INT');
-$cat = cot_import('cat', $_SERVER['REQUEST_METHOD'], 'TXT');
+$groupid = cot_import('groupid', $request_method, 'INT');
+$cat = cot_import('cat', $request_method, 'TXT');
 
 $common_url = 'm=other&p=wiki&groupid='.$groupid.'&cat='.$cat.'&pg='.$pg;
 $where_sql = "";

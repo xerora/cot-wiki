@@ -22,7 +22,7 @@ if(!$diffs_rows || count($diffs_rows) !== 2)
 
 }
 
-$t = new XTemplate(cot_tplfile('wiki.difference', 'plug'));
+$t = new XTemplate(cot_tplfile('wiki.diff', 'plug'));
 
 $cache_identifier = $diff1.'_'.$diff2;
 $cache && $changes = $cache->disk->get($cache_identifier, WIKI_CACHE_DIFF_REALM);
