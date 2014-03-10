@@ -10,14 +10,14 @@ cot::$db->registerTable('wiki_perms_group');
 function wiki_history_tags($row, $prefix = 'HISTORY_')
 {
 	$added_timestamp = strtotime($row['history_added']);
-	$author_name = htmlspecialchars($row['user_name']);
+	$author_name = ($row['history_author'] > 0) ? htmlspecialchars($row['user_name']) : htmlspecialchars($row['history_ip']);
 	return array(
 		$prefix.'REVISION' => (int)$row['history_revision'],
 		$prefix.'LANGUAGE' => htmlspecialchars($row['history_language']),
 		$prefix.'TIMEAGO' => cot_build_timeago($added_timestamp),
 		$prefix.'ADDED' => wiki_datetime($row['history_added']),
 		$prefix.'ADDED_STAMP' => $added_timestamp,
-		$prefix.'AUTHOR_ID' => (int)$row['history_id'],
+		$prefix.'AUTHOR_ID' => (int)$row['history_author'],
 		$prefix.'AUTHOR_NAME' => $author_name,
 		$prefix.'AUTHOR_LINK' => cot_build_user($row['history_author'], $author_name),
 		$prefix.'URL_DIFF' => cot_url('wiki', 'm=diff&id='.$row['history_page_id']),

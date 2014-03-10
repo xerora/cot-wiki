@@ -123,7 +123,10 @@ $t->assign(array(
 	'FILTER_CATEGORY' => wiki_categories_selectbox('cat', $cat, true),
 ));
 
-$t->parse('MAIN.FILTER');
+if(!empty($blocked_groups_rows) || $a == 'filter')
+{
+	$t->parse('MAIN.FILTER');
+}
 
 $pagenav = cot_pagenav('admin', $common_url, $d, $totalrows, $cfg['maxrowsperpage']);
 

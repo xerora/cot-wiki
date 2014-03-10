@@ -3,7 +3,7 @@
 [BEGIN_COT_EXT]
 Code=wiki
 Name=Wiki
-Description=
+Description=Adds wiki features to the standard Cotonti page module
 Version=1.0
 Date=2013-12-30
 Author=tyler@xaez.org
