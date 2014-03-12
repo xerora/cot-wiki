@@ -11,6 +11,7 @@ if($id)
 	$row = $db->query("SELECT page_text,page_parser,page_cat,page_title,page_date FROM {$db->pages} WHERE page_id=? LIMIT 1", $id)->fetch();
 	$wiki_text = $row['page_text'];
 	$wiki_action = '&id='.$id;
+	$wiki_date = $row['page_date'];
 }
 if($rev)
 {
@@ -20,23 +21,28 @@ if($rev)
 		"WHERE r.rev_id=? LIMIT 1", $rev)->fetch();
 	$wiki_text = $row['rev_text'];
 	$wiki_action = '&rev='.(int)$row['rev_id'];
+	$wiki_date = $row['history_added'];
 	$id = $row['history_page_id'];
 }
-
-if(wiki_block_group($usr['maingrp'], $row['page_cat']))
-{
-	cot_die_message(403, true);
-}
-
-require_once $cfg['system_dir'] . '/header.php';
-$t = new XTemplate(cot_tplfile('wiki.edit', 'plug'));
-
-$sys['parser'] = $row['page_parser'];
 
 if(!$row)
 {
 	cot_die_message(404, true);
 }
+
+list($usr['auth_read'], $usr['auth_write'], $usr['isadmin']) = cot_auth('page', $row['page_cat']);
+
+if(!$usr['auth_write'] || (empty($id) && !empty($rev) && !$usr['isadmin'] ))
+{
+	cot_die_message(403, true);
+}
+
+$out['subtitle'] = cot_title($row['page_title']);
+
+require_once $cfg['system_dir'] . '/header.php';
+$t = new XTemplate(cot_tplfile('wiki.edit', 'plug'));
+
+$sys['parser'] = $row['page_parser'];
 
 if($a == 'update')
 {
@@ -67,7 +73,7 @@ $t->assign(array(
 	'WIKI_EDIT_ACTION' => cot_url('wiki', 'm=edit&a=update'.$wiki_action),
 	'WIKI_EDIT_TEXT' => cot_textarea('rwikitext', $wiki_text, 24, 120, '', 'input_textarea_editor'),
 	'WIKI_EDIT_TITLE' => htmlspecialchars($row['page_title']),
-	'WIKI_EDIT_DATE' => wiki_datetime($row['page_date']),
+	'WIKI_EDIT_DATE' => wiki_datetime($wiki_date),
 ));
 
 $t->parse()->out();

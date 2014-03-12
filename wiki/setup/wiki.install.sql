@@ -15,11 +15,3 @@ CREATE TABLE IF NOT EXISTS `cot_wiki_revisions` (
   `rev_parser` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`rev_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
-
-CREATE TABLE IF NOT EXISTS `cot_wiki_perms_group` (
-  `perm_id` int(11) NOT NULL AUTO_INCREMENT,
-  `perm_groupid` int(11) NOT NULL,
-  `perm_cat` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `perm_catsub` tinyint(1) NOT NULL,
-  PRIMARY KEY (`perm_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
