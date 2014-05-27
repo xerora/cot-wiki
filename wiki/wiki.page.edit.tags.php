@@ -37,7 +37,7 @@ if($wiki_enabled)
 	}
 
 	$t->assign(array(
-		'WIKI_HISTORY_ACTION' => cot_url('wiki', 'm=diff')
+		'WIKI_HISTORY_ACTION' => cot_url('wiki', 'm=diff&id='.$id)
 	));
 }
 else

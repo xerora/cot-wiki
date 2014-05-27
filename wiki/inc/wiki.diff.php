@@ -2,15 +2,24 @@
 
 $request_method = $_SERVER['REQUEST_METHOD'] == 'POST' ? 'P' : 'G';
 
+$id = (int)cot_import('id', 'G', 'INT');
 $diff1 = cot_import('diff1', $request_method, 'INT');
 $diff2 = cot_import('diff2', $request_method, 'INT');
 $diffs = wiki_filter_diff_import(cot_import('diffs', $request_method, 'ARR'));
+
+require_once cot_incfile('page', 'module');
+$page = $db->query("SELECT page_title,page_cat FROM {$db->pages} WHERE page_id=?", $id)->fetch();
+
+if(!$page)
+{
+	cot_die_message(404);
+}
 
 if(!empty($diffs))
 {
 	if(count($diffs) !== 2 || !is_int($diffs[0]) || !is_int($diffs[1]))
 	{
-		cot_die_message(950, true);
+		cot_die_message(950, true, '', '', cot_url('page', 'cat='.$page['page_cat'].'&id='.$id, '', true));
 	}
 
 	// Find most recent revision
@@ -26,13 +35,9 @@ if(!empty($diffs))
 	}
 }
 
-require_once cot_incfile('page', 'module');
-
 $diffs_rows = $db->query("SELECT r.*,h.* FROM {$db->wiki_revisions} AS r ".
 	"LEFT JOIN {$db->wiki_history} AS h ON r.rev_id=h.history_revision ".
 	"WHERE r.rev_id=? OR r.rev_id=? LIMIT 2", array($diff1, $diff2))->fetchAll();
-
-$page = $db->query("SELECT page_title,page_cat FROM {$db->pages} WHERE page_id=?", $diffs_rows[0]['history_page_id'])->fetch();
 
 list($usr['auth_read'], $usr['auth_write'], $usr['isadmin']) = cot_auth('page', $page['page_cat']);
 cot_block($usr['isadmin']);

@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS `cot_wiki_history` (
   `history_revision` bigint(20) NOT NULL,
   `history_page_id` int(11) NOT NULL,
   `history_author` int(11) NOT NULL,
+  `history_comment` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `history_ip` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`history_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
