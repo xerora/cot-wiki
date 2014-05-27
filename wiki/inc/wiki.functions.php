@@ -150,3 +150,22 @@ function wiki_groups_selectbox($inputname, $value = '', $prependempty = false)
 	$output .= cot_rc('wiki_select_close', array());
 	return $output;
 }
+
+/**
+* Filter out checkboxes submitted as not checked. Filter all so an error can be thrown if too
+* many revisions have been selected.
+*
+* @param array $diff Diffs provided
+*/
+function wiki_filter_diff_import($diffs)
+{
+	$filtered = array();
+	foreach($diffs as $diff)
+	{
+		if(is_numeric($diff) && $diff > 0)
+		{
+			$filtered[] = (int)$diff;
+		}
+	}
+	return $filtered;
+}

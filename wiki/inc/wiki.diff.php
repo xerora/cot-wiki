@@ -4,6 +4,27 @@ $request_method = $_SERVER['REQUEST_METHOD'] == 'POST' ? 'P' : 'G';
 
 $diff1 = cot_import('diff1', $request_method, 'INT');
 $diff2 = cot_import('diff2', $request_method, 'INT');
+$diffs = wiki_filter_diff_import(cot_import('diffs', $request_method, 'ARR'));
+
+if(!empty($diffs))
+{
+	if(count($diffs) !== 2 || !is_int($diffs[0]) || !is_int($diffs[1]))
+	{
+		cot_die_message(950, true);
+	}
+
+	// Find most recent revision
+	if($diffs[0] > $diffs[1])
+	{
+		$diff1 = $diffs[1];
+		$diff2 = $diffs[0];
+	}
+	else
+	{
+		$diff1 = $diffs[0];
+		$diff2 = $diffs[1];
+	}
+}
 
 require_once cot_incfile('page', 'module');
 

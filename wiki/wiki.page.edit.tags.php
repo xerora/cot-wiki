@@ -30,8 +30,7 @@ if($wiki_enabled)
 			+
 			array(
 				'WIKI_HISTORY_ROW_IS_CURRENT' => $wiki_current_rev == $history['history_revision'] ? true : false,
-				'WIKI_HISTORY_ROW_COMPARE' => $wiki_history_count > 1 ? cot_radiobox($wiki_previous_rev, 'diff1', $history['history_revision'], '') : '&nbsp;',
-				'WIKI_HISTORY_ROW_COMPARE_WITH' => $wiki_history_count > 1 ? cot_radiobox($wiki_current_rev, 'diff2', $history['history_revision'], '') : '&nbsp;',
+				'WIKI_HISTORY_ROW_COMPARE_WITH' => $wiki_history_count > 1 ? cot_checkbox('', 'diffs[]', '', '', $history['history_revision'], '') : '&nbsp;',
 				'WIKI_HISTORY_ROW_URL_COMPARE_CURRENT' => cot_url('wiki', 'm=diff&diff2='.$wiki_current_rev.'&diff1='.$history['history_revision']),
 			));
 		$t->parse('MAIN.WIKI_HISTORY_ROW');
