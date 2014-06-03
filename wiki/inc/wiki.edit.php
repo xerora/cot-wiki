@@ -74,6 +74,7 @@ $t->assign(array(
 	'WIKI_EDIT_TEXT' => cot_textarea('rwikitext', $wiki_text, 24, 120, '', 'input_textarea_editor'),
 	'WIKI_EDIT_TITLE' => htmlspecialchars($row['page_title']),
 	'WIKI_EDIT_DATE' => wiki_datetime($wiki_date),
+	'WIKI_EDIT_COMMENT' => cot_inputbox('text', 'rmessage', '', array('size' => '56', 'maxlength' => '255')),
 ));
 
 $t->parse()->out();

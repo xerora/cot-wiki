@@ -14,9 +14,12 @@ if($id && cot::$structure['page'][$rpage['page_cat']]['wiki_enabled'])
 		'rev_parser' => $rpage['page_parser'],
 	));
 
-	wiki_history_add(array(
-		'history_page_id' => (int)$id,
-		'history_revision' => $wiki_revision,
-		'history_author' => cot::$usr['id']
-	));
+	if($wiki_revision)
+	{
+		wiki_history_add(array(
+			'history_page_id' => (int)$id,
+			'history_revision' => $wiki_revision,
+			'history_author' => cot::$usr['id'],
+		));
+	}
 }
