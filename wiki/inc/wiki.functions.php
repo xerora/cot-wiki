@@ -7,6 +7,8 @@ cot::$db->registerTable('wiki_history');
 cot::$db->registerTable('wiki_revisions');
 cot::$db->registerTable('wiki_perms_group');
 
+require_once cot_langfile('wiki', 'plug');
+
 function wiki_history_tags($row, $prefix = 'HISTORY_')
 {
 	$added_timestamp = strtotime($row['history_added']);

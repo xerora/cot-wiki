@@ -11,6 +11,15 @@ $wiki_enabled = $structure['page'][$pag['page_cat']]['wiki_enabled'] ? true : fa
 
 if($wiki_enabled)
 {
+
+	if(cot_plugin_active('i18n'))
+	{
+		require_once cot_incfile('i18n', 'plug');
+		if(cot_i18n_enabled($cat))
+		{
+		}
+	}
+
 	$wiki_history = wiki_history_list($id);
 	$wiki_history_count = count($wiki_history);
 	$wiki_has_history = !empty($wiki_history) ? true : false;

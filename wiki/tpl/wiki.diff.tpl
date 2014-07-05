@@ -4,6 +4,10 @@
 <div class="block">
 	<h2>Difference between revisions of "{DIFF_TITLE}"</h2>
 
+	<div style="margin: 10px 0; float: right;">
+		<a style="font-size: 14px; font-weight: bold;" href="{DIFF_EDIT_URL}">{PHP.L.Edit}</a>
+	</div>
+
 	<table style="width: 100%; border-spacing: 10px; border-collapse: separate;">
 		<thead>
 			<tr>

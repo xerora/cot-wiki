@@ -185,4 +185,5 @@ $t->assign(array(
 	'DIFF2_AUTHOR' => htmlspecialchars($diff2['history_author']),
 	'DIFF2_URL_EDIT' => cot_url('wiki', 'm=edit&rev='.$row_diff2['rev_id']),
 	'DIFF_TITLE' => htmlspecialchars($page['page_title']),
+	'DIFF_EDIT_URL' => cot_url('page', 'm=edit&id='.$id),
 ));
