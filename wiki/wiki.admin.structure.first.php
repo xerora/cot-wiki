@@ -9,3 +9,7 @@ if($n != 'page')
 {
 	unset($cot_extrafields[$db_structure]['wiki_enabled'], $cot_extrafields[$db_structure]['wiki_subcats']);
 }
+else
+{
+	require_once cot_langfile('wiki', 'plug');
+}
