@@ -7,7 +7,7 @@ Hooks=standalone
 
 $m = cot_import('m', 'G', 'ALP');
 
-if(in_array($m, array('edit', 'diff')))
+if(in_array($m, array('edit', 'diff', 'history')))
 {
 	require_once cot_incfile('wiki', 'plug', $m);
 }

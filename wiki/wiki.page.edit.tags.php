@@ -54,3 +54,7 @@ else
 	$wiki_history = false;
 	$wiki_has_history = false;
 }
+
+$t->assign(array(
+	'WIKI_HISTORY_URL' => cot_url('wiki', 'm=history&cat='.$pag['page_cat'].'&id='.$id)
+));

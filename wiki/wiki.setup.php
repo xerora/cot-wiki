@@ -22,5 +22,6 @@ Recomments_plugins=
 [BEGIN_COT_EXT_CONFIG]
 parser=01:callback:cot_get_parsers():markdown:
 datetime_format=02:string:::
+history_row_limit=03:string::50:
 [END_COT_EXT_CONFIG]
 ==================== */

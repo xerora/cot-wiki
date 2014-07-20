@@ -17,7 +17,12 @@
 					</td>
 				</tr>
 				<tr>
+					<td><strong>{PHP.L.wiki_edit_message}</strong> &nbsp; {WIKI_EDIT_COMMENT}</td>
+				</tr>
+				<tr>
 					<td style="text-align: center; padding: 10px 0;"><button type="submit">{PHP.L.Publish}</button>
+					</td>
+				</tr>
 			</table>
 		</form>
 	</div>

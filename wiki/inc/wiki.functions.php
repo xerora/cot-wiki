@@ -25,6 +25,7 @@ function wiki_history_tags($row, $prefix = 'HISTORY_')
 		$prefix.'URL_DIFF' => cot_url('wiki', 'm=diff&id='.$row['history_page_id']),
 		$prefix.'URL_AT' => cot_url('page', 'c='.$row['page_cat'].'&id='.$row['history_page_id'].'&rev='.$row['history_revision']),
 		$prefix.'URL_EDIT' => cot_url('wiki', '&m=edit&rev='.(int)$row['history_revision']),
+		$prefix.'COMMENT' => htmlspecialchars($row['history_comment']),
 	);
 }
 
