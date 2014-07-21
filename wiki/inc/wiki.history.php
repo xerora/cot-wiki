@@ -19,6 +19,12 @@ $rows_query = $db->query("SELECT h.*,u.user_name,u.user_id FROM $db_wiki_history
 	"WHERE h.history_page_id=? ORDER BY history_added DESC LIMIT ".$history_row_limit, $id);
 
 $history_count = $rows_query->rowCount();
+
+if(!$history_count)
+{
+	cot_die_message(404, true);
+}
+
 $rows = $rows_query->fetchAll();
 
 require_once $cfg['system_dir'] . '/header.php';
@@ -27,14 +33,18 @@ $t = new XTemplate(cot_tplfile('wiki.history', 'plug'));
 foreach($rows as $row)
 {
 	$t->assign(
-		wiki_history_tags($row, 'HISTORY_')
+		wiki_history_tags($row, 'HISTORY_ROW_')
 		+
 		array(
-			'HISTORY_COMPARE_WITH' => $history_count > 1 ? cot_checkbox('', 'diffs[]', '', '', $history['history_revision'], '') : '&nbsp;',
+			'HISTORY_ROW_COMPARE_WITH' => $history_count > 1 ? cot_checkbox('', 'diffs[]', '', '', $row['history_revision'], '') : '&nbsp;',
 		)
 	);
 	$t->parse('MAIN.ROWS');
 }
+
+$t->assign(array(
+	'HISTORY_COMPARE_ACTION' => cot_url('wiki', 'm=diff&id='.$id)
+));
 
 $t->parse()->out();
 cot_display_messages($t);
