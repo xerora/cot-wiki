@@ -33,6 +33,8 @@ $rows_query->closeCursor();
 
 $history_total_count = (int)$db->query("SELECT COUNT(*) FROM $db_wiki_history WHERE history_page_id=?", $id)->fetchColumn();
 
+list($pg, $d, $durl) = cot_import_pagenav('d', $cfg['plugin']['wiki']['history_row_limit']);
+
 $out['subtitle'] = $L['wiki_revision_history'];
 require_once $cfg['system_dir'] . '/header.php';
 $t = new XTemplate(cot_tplfile('wiki.history', 'plug'));
@@ -53,9 +55,23 @@ foreach($rows as $row)
 	$t->parse('MAIN.ROWS');
 }
 
+$pagenav = cot_pagenav('wiki', 'm=history&cat='.$cat.'&id='.$id.'&d='.$durl, $d, $history_total_count, $cfg['plugin']['wiki']['history_row_limit'], 'd');
+
 $t->assign(array(
 	'HISTORY_COMPARE_ACTION' => cot_url('wiki', 'm=diff&cat='.$cat.'&id='.$id),
 	'HISTORY_TOTAL_COUNT' => $history_count,
+	'HISTORY_PAGENAV_MAIN' => $pagenav['main'],
+	'HISTORY_PAGENAV_NEXT' => $pagenav['next'],
+	'HISTORY_PAGENAV_PREV' => $pagenav['prev'],
+	'HISTORY_PAGENAV_LAST' => $pagenav['last'],
+	'HISTORY_PAGENAV_CURRENT' => $pagenav['current'],
+	'HISTORY_PAGENAV_FIRSTLINK' => $pagenav['firstlink'],
+	'HISTORY_PAGENAV_PREVLINK' => $pagenav['prevlink'],
+	'HISTORY_PAGENAV_NEXTLINK' => $pagenav['nextlink'],
+	'HISTORY_PAGENAV_LASTLINK' => $pagenav['lastlink'],
+	'HISTORY_PAGENAV_TOTAL' => $pagenav['total'],
+	'HISTORY_PAGENAV_ONPAGE' => $pagenav['onpage'],
+	'HISTORY_PAGENAV_ENTRIES' => $pagenav['entries'],
 ));
 
 cot_display_messages($t);

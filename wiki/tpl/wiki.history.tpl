@@ -3,10 +3,12 @@
 <div class="block">
 	{FILE "{PHP.cfg.themes_dir}/{PHP.cfg.defaulttheme}/warnings.tpl"}
 	<h2>{PHP.L.wiki_history_title}</h2>
+
 	<form method="post" action="{HISTORY_COMPARE_ACTION}">
 	<div style="margin: 15px 0;">
-		<button type="submit">{PHP.L.wiki_compare_revisions}</button>
+			<button type="submit">{PHP.L.wiki_compare_revisions}</button>
 	</div>
+
 	<table class="cells">
 		<!-- BEGIN: ROWS -->
 		<tr>

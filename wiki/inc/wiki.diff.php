@@ -7,6 +7,7 @@ $cat = cot_import('cat', 'G', 'TXT');
 $diff1 = cot_import('diff1', $request_method, 'INT');
 $diff2 = cot_import('diff2', $request_method, 'INT');
 $diffs = wiki_filter_diff_import(cot_import('diffs', $request_method, 'ARR'));
+$d = cot_import('d', 'G', 'INT');
 
 require_once cot_incfile('page', 'module');
 $page = $db->query("SELECT page_title,page_cat FROM {$db->pages} WHERE page_id=?", $id)->fetch();
@@ -188,6 +189,7 @@ $t->assign(array(
 	'DIFF1_DATE' => wiki_datetime($diffs_rows[0]['history_added']),
 	'DIFF1_AUTHOR' => htmlspecialchars($diff1['history_author']),
 	'DIFF1_URL_EDIT' => cot_url('wiki', 'm=edit&rev='.$row_diff1['rev_id']),
+	'DIFF_BACK_URL' => cot_url('wiki', 'm=history&cat='.$cat.'&id='.$id.'&d='.$d),
 	'DIFF2_DATE' => wiki_datetime($diffs_rows[1]['history_added']),
 	'DIFF2_AUTHOR' => htmlspecialchars($diff2['history_author']),
 	'DIFF2_URL_EDIT' => cot_url('wiki', 'm=edit&rev='.$row_diff2['rev_id']),

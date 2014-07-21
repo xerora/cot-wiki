@@ -6,6 +6,8 @@
 
 	<div style="margin: 10px 0; float: right;">
 		<a style="font-size: 14px; font-weight: bold;" href="{DIFF_EDIT_URL}">{PHP.L.Edit}</a>
+		&nbsp; &nbsp;
+		<a style="font-size: 14px; font-weight: bold;" href="{DIFF_BACK_URL}">{PHP.L.wiki_back}</a>
 	</div>
 
 	<table style="width: 100%; border-spacing: 10px; border-collapse: separate;">
