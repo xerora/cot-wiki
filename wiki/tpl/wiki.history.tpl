@@ -11,10 +11,10 @@
 		<!-- BEGIN: ROWS -->
 		<tr>
 			<td style="width: 5%; text-align: center;">{HISTORY_ROW_COMPARE_WITH}</td>
+			<td style="width: 20%;"><a href="{HISTORY_ROW_URL_AT}">{HISTORY_ROW_ADDED}</a></td>
+			<td style="width: 20%;">{HISTORY_ROW_TIMEAGO}</td>
 			<td style="width: 20%;">{HISTORY_ROW_AUTHOR_LINK}</td>
 			<td style="width: 35%;">{HISTORY_ROW_COMMENT}</td>
-			<td style="width: 20%;">{HISTORY_ROW_TIMEAGO}</td>
-			<td style="width: 20%;"><a href="{HISTORY_ROW_URL_AT}">{HISTORY_ROW_ADDED}</a></td>
 		</tr>
 		<!-- END: ROWS -->
 	</table>

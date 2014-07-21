@@ -27,6 +27,7 @@ if(!$history_count)
 
 $rows = $rows_query->fetchAll();
 
+$out['subtitle'] = $L['wiki_revision_history'];
 require_once $cfg['system_dir'] . '/header.php';
 $t = new XTemplate(cot_tplfile('wiki.history', 'plug'));
 
@@ -37,13 +38,14 @@ foreach($rows as $row)
 		+
 		array(
 			'HISTORY_ROW_COMPARE_WITH' => $history_count > 1 ? cot_checkbox('', 'diffs[]', '', '', $row['history_revision'], '') : '&nbsp;',
+
 		)
 	);
 	$t->parse('MAIN.ROWS');
 }
 
 $t->assign(array(
-	'HISTORY_COMPARE_ACTION' => cot_url('wiki', 'm=diff&id='.$id)
+	'HISTORY_COMPARE_ACTION' => cot_url('wiki', 'm=diff&cat='.$cat.'&id='.$id)
 ));
 
 $t->parse()->out();

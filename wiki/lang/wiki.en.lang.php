@@ -4,6 +4,7 @@ $L['Wiki'] = 'Wiki';
 $L['wiki_history_title'] = 'Wiki History';
 
 $L['wiki_revision'] = 'Revision';
+$L['wiki_revision_history'] = 'Revision History';
 $L['wiki_compare_revisions'] = 'Compare revisions';
 $L['wiki_edit_message'] = 'Edit message';
 
