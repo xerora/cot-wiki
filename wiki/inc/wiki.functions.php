@@ -163,6 +163,10 @@ function wiki_groups_selectbox($inputname, $value = '', $prependempty = false)
 function wiki_filter_diff_import($diffs)
 {
 	$filtered = array();
+	if(!is_array($diffs))
+	{
+		return;
+	}
 	foreach($diffs as $diff)
 	{
 		if(is_numeric($diff) && $diff > 0)

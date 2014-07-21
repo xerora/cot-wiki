@@ -9,6 +9,9 @@ $cat = cot_import('cat', 'G', 'TXT');
 $history_row_limit = (int)$cfg['plugin']['wiki']['history_row_limit'];
 $history_row_limit = $history_row_limit ? $history_row_limit : WIKI_HISTORY_LIMIT_DEFAULT;
 
+list($usr['auth_read'], $usr['auth_write'], $usr['isadmin']) = cot_auth('page', $cat);
+cot_block($usr['auth_read']);
+
 if(!wiki_category_enabled($cat))
 {
 	cot_die_message(403, true);
@@ -26,28 +29,35 @@ if(!$history_count)
 }
 
 $rows = $rows_query->fetchAll();
+$rows_query->closeCursor();
+
+$history_total_count = (int)$db->query("SELECT COUNT(*) FROM $db_wiki_history WHERE history_page_id=?", $id)->fetchColumn();
 
 $out['subtitle'] = $L['wiki_revision_history'];
 require_once $cfg['system_dir'] . '/header.php';
 $t = new XTemplate(cot_tplfile('wiki.history', 'plug'));
 
+$history_order = 0;
+
 foreach($rows as $row)
 {
+	$history_order++;
 	$t->assign(
 		wiki_history_tags($row, 'HISTORY_ROW_')
 		+
 		array(
 			'HISTORY_ROW_COMPARE_WITH' => $history_count > 1 ? cot_checkbox('', 'diffs[]', '', '', $row['history_revision'], '') : '&nbsp;',
-
+			'HISTORY_ROW_ORDER' => $history_order,
 		)
 	);
 	$t->parse('MAIN.ROWS');
 }
 
 $t->assign(array(
-	'HISTORY_COMPARE_ACTION' => cot_url('wiki', 'm=diff&cat='.$cat.'&id='.$id)
+	'HISTORY_COMPARE_ACTION' => cot_url('wiki', 'm=diff&cat='.$cat.'&id='.$id),
+	'HISTORY_TOTAL_COUNT' => $history_count,
 ));
 
-$t->parse()->out();
 cot_display_messages($t);
+$t->parse()->out();
 require_once $cfg['system_dir'] . '/footer.php';

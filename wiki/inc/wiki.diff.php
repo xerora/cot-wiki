@@ -21,9 +21,8 @@ if(!empty($diffs))
 
 	if(count($diffs) !== 2 || !is_int($diffs[0]) || !is_int($diffs[1]))
 	{
-		cot_message('wiki_history_invalid_parameters');
+		cot_error('wiki_history_invalid_parameters');
 		cot_redirect(cot_url('wiki', 'm=history&cat='.$cat.'&id='.$id, '', true));
-		// cot_die_message(950, true, '', '', cot_url('page', 'cat='.$page['page_cat'].'&id='.$id, '', true));
 	}
 
 	// Find most recent revision
@@ -38,7 +37,7 @@ if(!empty($diffs))
 		$diff2 = $diffs[1];
 	}
 }
-elseif(empty($diff1) && empty($diff2))
+elseif(empty($diff1) || empty($diff2))
 {
 	cot_die_message(950, true);
 }

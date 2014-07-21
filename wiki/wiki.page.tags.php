@@ -29,5 +29,13 @@ if($usr['auth_write'] && !$usr['isadmin'] && wiki_category_enabled($pag['page_ca
 	$t->assign(array(
 		'WIKI_EDIT_URL' => $wiki_edit_url,
 	));
-	$t->parse('MAIN.WIKI_EDIT');
+	$t->parse('MAIN.WIKI_WRITE');
+}
+
+if($usr['auth_write'] && wiki_category_enabled($pag['page_cat']))
+{
+	$t->assign(array(
+		'WIKI_HISTORY_URL' => cot_url('wiki', 'm=history&cat='.$c.'&id='.$id),
+	));
+	$t->parse('MAIN.WIKI_ENABLED');
 }
