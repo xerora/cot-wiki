@@ -23,19 +23,17 @@ if(!empty($rev) && is_int($rev) && $usr['isadmin'])
 	));
 }
 
-if($usr['auth_write'] && !$usr['isadmin'] && wiki_category_enabled($pag['page_cat']))
-{
-	$wiki_edit_url = cot_url('wiki', 'm=edit&id='.$pag['page_id']);
-	$t->assign(array(
-		'WIKI_EDIT_URL' => $wiki_edit_url,
-	));
-	$t->parse('MAIN.WIKI_WRITE');
-}
-
 if($usr['auth_write'] && wiki_category_enabled($pag['page_cat']))
 {
+	if(!$usr['isadmin'])
+	{
+		$t->assign(array(
+			'WIKI_EDIT_URL' => cot_url('wiki', 'm=edit&id='.$pag['page_id']),
+		));
+		$t->parse('MAIN.WIKI_ENABLED.WIKI_WRITE');
+	}
 	$t->assign(array(
-		'WIKI_HISTORY_URL' => cot_url('wiki', 'm=history&cat='.$c.'&id='.$id),
+		'WIKI_HISTORY_URL' => cot_url('wiki', 'm=history&cat='.$pag['page_cat'].'&id='.$id),
 	));
 	$t->parse('MAIN.WIKI_ENABLED');
 }

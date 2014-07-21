@@ -22,8 +22,7 @@ if(!empty($diffs))
 
 	if(count($diffs) !== 2 || !is_int($diffs[0]) || !is_int($diffs[1]))
 	{
-		cot_error('wiki_history_invalid_parameters');
-		cot_redirect(cot_url('wiki', 'm=history&cat='.$cat.'&id='.$id, '', true));
+		$diffs = null;
 	}
 
 	// Find most recent revision
@@ -38,9 +37,11 @@ if(!empty($diffs))
 		$diff2 = $diffs[1];
 	}
 }
-elseif(empty($diff1) || empty($diff2))
+
+if(!isset($diffs) && (empty($diff1) && empty($diff2)) )
 {
-	cot_die_message(950, true);
+	cot_error('wiki_history_invalid_parameters');
+	cot_redirect(cot_url('wiki', 'm=history&cat='.$cat.'&id='.$id, '', true));	
 }
 
 $diffs_rows = $db->query("SELECT r.*,h.* FROM {$db->wiki_revisions} AS r ".
@@ -48,7 +49,7 @@ $diffs_rows = $db->query("SELECT r.*,h.* FROM {$db->wiki_revisions} AS r ".
 	"WHERE r.rev_id=? OR r.rev_id=? LIMIT 2", array($diff1, $diff2))->fetchAll();
 
 list($usr['auth_read'], $usr['auth_write'], $usr['isadmin']) = cot_auth('page', $page['page_cat']);
-cot_block($usr['isadmin']);
+cot_block($usr['auth_write']);
 
 if(!$diffs_rows || count($diffs_rows) !== 2)
 {
@@ -185,14 +186,20 @@ foreach($changes as $i => $blocks)
 $diff1_timestamp = strtotime($row_diff1['history_added']);
 $diff2_timestamp = strtotime($row_diff2['history_added']);
 
+$diff_edit_url = cot_url('wiki', 'm=edit&rev='.$diffs_rows[0]['history_page_id']);
+if($usr['isadmin'])
+{
+	$diff_edit_url = cot_url('page', 'm=edit&id='.$id);
+}
+
 $t->assign(array(
 	'DIFF1_DATE' => wiki_datetime($diffs_rows[0]['history_added']),
-	'DIFF1_AUTHOR' => htmlspecialchars($diff1['history_author']),
+	'DIFF1_AUTHOR' => htmlspecialchars($diffs_rows[0]['history_author']),
 	'DIFF1_URL_EDIT' => cot_url('wiki', 'm=edit&rev='.$row_diff1['rev_id']),
 	'DIFF_BACK_URL' => cot_url('wiki', 'm=history&cat='.$cat.'&id='.$id.'&d='.$d),
 	'DIFF2_DATE' => wiki_datetime($diffs_rows[1]['history_added']),
-	'DIFF2_AUTHOR' => htmlspecialchars($diff2['history_author']),
-	'DIFF2_URL_EDIT' => cot_url('wiki', 'm=edit&rev='.$row_diff2['rev_id']),
+	'DIFF2_AUTHOR' => htmlspecialchars($diffs_rows[1]['history_author']),
+	'DIFF2_URL_EDIT' => cot_url('wiki', 'm=edit&rev='.$diffs_rows[1]['rev_id']),
 	'DIFF_TITLE' => htmlspecialchars($page['page_title']),
-	'DIFF_EDIT_URL' => cot_url('page', 'm=edit&id='.$id),
+	'DIFF_EDIT_URL' => $diff_edit_url,
 ));
