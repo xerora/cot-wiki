@@ -9,6 +9,8 @@ $cat = cot_import('cat', 'G', 'TXT');
 $history_row_limit = (int)$cfg['plugin']['wiki']['history_row_limit'];
 $history_row_limit = $history_row_limit ? $history_row_limit : WIKI_HISTORY_LIMIT_DEFAULT;
 
+list($pg, $d, $durl) = cot_import_pagenav('d', $cfg['plugin']['wiki']['history_row_limit']);
+
 list($usr['auth_read'], $usr['auth_write'], $usr['isadmin']) = cot_auth('page', $cat);
 cot_block($usr['auth_read']);
 
@@ -19,7 +21,7 @@ if(!wiki_category_enabled($cat))
 
 $rows_query = $db->query("SELECT h.*,u.user_name,u.user_id FROM $db_wiki_history AS h ".
 	"LEFT JOIN ".$db_users." AS u ON h.history_author=u.user_id ".
-	"WHERE h.history_page_id=? ORDER BY history_added DESC LIMIT ".$history_row_limit, $id);
+	"WHERE h.history_page_id=? ORDER BY history_added DESC LIMIT ".$d.", ".$history_row_limit, $id);
 
 $history_count = $rows_query->rowCount();
 
@@ -33,7 +35,7 @@ $rows_query->closeCursor();
 
 $history_total_count = (int)$db->query("SELECT COUNT(*) FROM $db_wiki_history WHERE history_page_id=?", $id)->fetchColumn();
 
-list($pg, $d, $durl) = cot_import_pagenav('d', $cfg['plugin']['wiki']['history_row_limit']);
+$common_url = '&cat='.$cat.'&id='.$id.'&d='.$durl;
 
 $out['subtitle'] = $L['wiki_revision_history'];
 require_once $cfg['system_dir'] . '/header.php';
@@ -55,7 +57,7 @@ foreach($rows as $row)
 	$t->parse('MAIN.ROWS');
 }
 
-$pagenav = cot_pagenav('wiki', 'm=history&cat='.$cat.'&id='.$id.'&d='.$durl, $d, $history_total_count, $cfg['plugin']['wiki']['history_row_limit'], 'd');
+$pagenav = cot_pagenav('wiki', 'm=history'.$common_url, $d, $history_total_count, $cfg['plugin']['wiki']['history_row_limit'], 'd');
 
 $t->assign(array(
 	'HISTORY_COMPARE_ACTION' => cot_url('wiki', 'm=diff&cat='.$cat.'&id='.$id),

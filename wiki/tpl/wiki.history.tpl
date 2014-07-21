@@ -20,6 +20,9 @@
 		</tr>
 		<!-- END: ROWS -->
 	</table>
+	<div style="margin-top: 15px;">
+		{HISTORY_PAGENAV_PREV} {HISTORY_PAGENAV_MAIN} {HISTORY_PAGENAV_NEXT}
+	</div>
 	</form>
 </div>
 
