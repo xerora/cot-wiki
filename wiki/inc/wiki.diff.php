@@ -192,14 +192,13 @@ if($usr['isadmin'])
 	$diff_edit_url = cot_url('page', 'm=edit&id='.$id);
 }
 
-$t->assign(array(
-	'DIFF1_DATE' => wiki_datetime($diffs_rows[0]['history_added']),
-	'DIFF1_AUTHOR' => htmlspecialchars($diffs_rows[0]['history_author']),
-	'DIFF1_URL_EDIT' => cot_url('wiki', 'm=edit&rev='.$row_diff1['rev_id']),
-	'DIFF_BACK_URL' => cot_url('wiki', 'm=history&cat='.$cat.'&id='.$id.'&d='.$d),
-	'DIFF2_DATE' => wiki_datetime($diffs_rows[1]['history_added']),
-	'DIFF2_AUTHOR' => htmlspecialchars($diffs_rows[1]['history_author']),
-	'DIFF2_URL_EDIT' => cot_url('wiki', 'm=edit&rev='.$diffs_rows[1]['rev_id']),
-	'DIFF_TITLE' => htmlspecialchars($page['page_title']),
-	'DIFF_EDIT_URL' => $diff_edit_url,
-));
+$t->assign(
+	wiki_diff_tags($diffs_rows[0], 'DIFF1_')
+	+
+	wiki_diff_tags($diffs_rows[1], 'DIFF2_')
+	+
+	array(
+		'DIFF_TITLE' => htmlspecialchars($page['page_title']),
+		'DIFF_EDIT_URL' => $diff_edit_url,
+	)
+);

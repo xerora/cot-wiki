@@ -29,6 +29,15 @@ function wiki_history_tags($row, $prefix = 'HISTORY_')
 	);
 }
 
+function wiki_diff_tags($row, $prefix = 'DIFF_ROW_')
+{
+	return array(
+		$prefix.'DATE' => $row['history_added'],
+		$prefix.'AUTHOR' => htmlspecialchars($row['history_author']),
+		$prefix.'URL_EDIT' => cot_url('wiki', 'm=edit&rev='.$row_diff1['rev_id']),
+	);
+}
+
 function wiki_history_list($id, $lang = '')
 {
 	if(empty($lang))
