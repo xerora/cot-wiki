@@ -10,7 +10,7 @@ $L['wiki_edit_message'] = 'Edit message';
 $L['wiki_back'] = 'Back';
 
 // Error messages
-$L['wiki_history_invalid_parameters'] = 'You must only select only 2 revisions to compare';
+$L['wiki_history_invalid_parameters'] = 'You must only select 2 revisions to compare';
 
 // Structure configuration titles
 $L['wiki_subcats_0'] = $L['No'];
