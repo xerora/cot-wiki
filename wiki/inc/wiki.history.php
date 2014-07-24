@@ -21,7 +21,7 @@ if(!wiki_category_enabled($cat))
 
 $rows_query = $db->query("SELECT h.*,u.user_name,u.user_id FROM $db_wiki_history AS h ".
 	"LEFT JOIN ".$db_users." AS u ON h.history_author=u.user_id ".
-	"WHERE h.history_page_id=? ORDER BY history_added DESC LIMIT ".$d.", ".$history_row_limit, $id);
+	"WHERE h.history_page_id=? ORDER BY history_added DESC LIMIT ".(int)$d.", ".$history_row_limit, $id);
 
 $history_count = $rows_query->rowCount();
 
@@ -32,6 +32,12 @@ if(!$history_count)
 
 $rows = $rows_query->fetchAll();
 $rows_query->closeCursor();
+
+if(cot_plugin_active('i18n'))
+{
+	require_once cot_incfile('i18n', 'plug');
+	$locales = cot_i18n_list_page_locales($id);
+}
 
 $history_total_count = (int)$db->query("SELECT COUNT(*) FROM $db_wiki_history WHERE history_page_id=?", $id)->fetchColumn();
 
@@ -58,6 +64,18 @@ foreach($rows as $row)
 }
 
 $pagenav = cot_pagenav('wiki', 'm=history'.$common_url, $d, $history_total_count, $cfg['plugin']['wiki']['history_row_limit'], 'd');
+
+if(is_array($locales) && !empty($locales))
+{
+	foreach($locales as $locale)
+	{
+		$t->assign(array(
+			'HISTORY_LOCALE_NAME' => htmlspecialchars($i18n_locales[$locale]),
+			'HISTORY_LOCALE_ALIAS' => htmlspecialchars($locale),
+		));
+		$t->assign('MAIN.HISTORY_LOCALES');
+	}
+}
 
 $t->assign(array(
 	'HISTORY_COMPARE_ACTION' => cot_url('wiki', 'm=diff&cat='.$cat.'&id='.$id),
